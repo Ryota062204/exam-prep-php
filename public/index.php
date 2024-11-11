@@ -5,6 +5,7 @@ use Src\Controller\RegisterController;
 use Src\Controller\CreateController;
 use Src\Controller\OverviewController;
 use Src\Controller\DeleteController;
+use Src\Controller\EditController;
 use Src\Model\Teacher;
 use Src\Model\Student;
 use Src\Model\User;
@@ -37,8 +38,12 @@ switch ($page) {
     case 'overview':
         $controller = new OverviewController($twig, $pdo);
         break;
+    case 'edit':
+        $controller = new EditController($twig, $pdo);
+        break;
+        
     case 'delete':
-        $controller = new DeleteController($twig, $pdo);
+        $controller = new DeleteController( $pdo);
         break;
     default:
         $controller = new LoginController($twig, $pdo);

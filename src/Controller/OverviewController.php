@@ -3,13 +3,14 @@
 namespace Src\Controller;
 
 use Src\Model\Student;
+use PDO;
 
 class OverviewController
 {
     private $twig;
     private $pdo;
 
-    public function __construct($twig, $pdo)
+    public function __construct($twig, PDO $pdo)
     {
         $this->twig = $twig;
         $this->pdo = $pdo;
@@ -18,7 +19,6 @@ class OverviewController
     public function render()
     {
         $students = Student::selectAll($this->pdo);
-
         echo $this->twig->render('overview.html.twig', ['students' => $students]);
     }
 }
