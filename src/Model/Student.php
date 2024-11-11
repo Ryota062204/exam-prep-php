@@ -11,6 +11,7 @@ class Student implements CrudInterface
     private int $score;
     private string $email;
 
+    // Constructor
     public function __construct(int $id, string $name, int $score, string $email)
     {
         $this->id = $id;
@@ -19,45 +20,34 @@ class Student implements CrudInterface
         $this->email = $email;
     }
 
-    public function getId(): int
-    { 
-        return $this->id; 
-    }
+    public function getId(): int { 
+        return $this->id;
+     }
 
-    public function setId(int $id): void 
-    { 
+    public function setId(int $id): void { 
         $this->id = $id; 
     }
 
     public function getName(): string
-    { 
-        return $this->name; 
+     { return $this->name; 
     }
-
     public function setName(string $name): void 
-    { 
-        $this->name = $name; 
-    }
+    { $this->name = $name;
+     }
 
-    public function getScore(): int
-    { 
-        return $this->score; 
+    public function getScore(): int { return 
+        $this->score; 
     }
+    public function setScore(int $score): void { 
+        $this->score = $score;
+     }
 
-    public function setScore(int $score): void
-    { 
-        $this->score = $score; 
+    public function getEmail(): string { return
+         $this->email; 
     }
-
-    public function getEmail(): string
-    { 
-        return $this->email; 
+    public function setEmail(string $email): void { $this->email = $email; 
     }
-
-    public function setEmail(string $email): void 
-    { 
-        $this->email = $email; 
-    }
+    
 
     public function save(PDO $pdo): bool
     {
@@ -103,9 +93,9 @@ class Student implements CrudInterface
         return null;
     }
 
-    public static function countFiltered(PDO $pdo, ?int $minScore = null, ?string $nameFilter = null): int
+    public static function selectAll(PDO $pdo, ?int $minScore = null, ?string $nameFilter = null): array
     {
-        $query = "SELECT COUNT(*) FROM students WHERE 1=1";
+        $query = "SELECT * FROM students WHERE 1";
         $params = [];
 
         if ($minScore !== null) {
@@ -114,49 +104,26 @@ class Student implements CrudInterface
         }
 
         if ($nameFilter !== null) {
-            $query .= " AND name LIKE :nameFilter";
-            $params['nameFilter'] = '%' . $nameFilter . '%';
+            $query .= " AND name LIKE :name";
+            $params['name'] = $nameFilter . '%';
         }
 
+        $query .= " ORDER BY name ASC";
         $stmt = $pdo->prepare($query);
         $stmt->execute($params);
 
-        return (int) $stmt->fetchColumn();
-    }
+        $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    public static function selectAll(PDO $pdo, ?int $minScore = null, ?string $nameFilter = null, int $limit = 12, int $offset = 0): array
-    {
-        $query = "SELECT * FROM students WHERE 1=1";
-        $params = [];
-
-        if ($minScore !== null) {
-            $query .= " AND score >= :minScore";
-            $params['minScore'] = $minScore;
+        $studentObjects = [];
+        foreach ($students as $studentData) {
+            $studentObjects[] = new self(
+                $studentData['id'],
+                $studentData['name'],
+                $studentData['score'],
+                $studentData['email']
+            );
         }
 
-        if ($nameFilter !== null) {
-            $query .= " AND name LIKE :nameFilter";
-            $params['nameFilter'] = '%' . $nameFilter . '%';
-        }
-
-        $query .= " ORDER BY name ASC LIMIT :limit OFFSET :offset";
-        $stmt = $pdo->prepare($query);
-
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
-        }
-
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-
-        $stmt->execute();
-        $studentsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $students = [];
-        foreach ($studentsData as $data) {
-            $students[] = new self($data['id'], $data['name'], $data['score'], $data['email']);
-        }
-
-        return $students;
+        return $studentObjects;
     }
 }
