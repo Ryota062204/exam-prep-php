@@ -20,9 +20,20 @@ class OverviewController
     {
         $minScore = isset($_GET['score']) && $_GET['score'] !== '' ? (int)$_GET['score'] : null;
         $nameFilter = isset($_GET['name']) && $_GET['name'] !== '' ? $_GET['name'] : null;
+        
+        $currentPage = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+        $studentsPerPage = 12;
+        $offset = ($currentPage - 1) * $studentsPerPage;
 
-        $students = Student::selectAll($this->pdo, $minScore, $nameFilter);
+        $totalStudents = Student::countFiltered($this->pdo, $minScore, $nameFilter);
+        $totalPages = ceil($totalStudents / $studentsPerPage);
 
-        echo $this->twig->render('overview.html.twig', ['students' => $students]);
+        $students = Student::selectAll($this->pdo, $minScore, $nameFilter, $studentsPerPage, $offset);
+
+        echo $this->twig->render('overview.html.twig', [
+            'students' => $students,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages
+        ]);
     }
 }
