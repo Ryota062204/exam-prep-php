@@ -17,10 +17,8 @@ class OverviewController
 
     public function render()
     {
-        // Fetch all students from the database
         $students = Student::selectAll($this->pdo);
 
-        // Render the overview page using Twig
         echo $this->twig->render('overview.html.twig', ['students' => $students]);
     }
 }
