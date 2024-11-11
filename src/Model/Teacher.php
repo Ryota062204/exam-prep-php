@@ -19,7 +19,6 @@ class Teacher implements CrudInterface
         $this->password = $password;
     }
 
-    // Getter and Setter for ID
     public function getId(): int
     {
         return $this->id;
@@ -30,7 +29,6 @@ class Teacher implements CrudInterface
         $this->id = $id;
     }
 
-    // Getter and Setter for Username
     public function getUsername(): string
     {
         return $this->username;
@@ -41,7 +39,6 @@ class Teacher implements CrudInterface
         $this->username = $username;
     }
 
-    // Getter and Setter for Email
     public function getEmail(): string
     {
         return $this->email;
@@ -52,7 +49,6 @@ class Teacher implements CrudInterface
         $this->email = $email;
     }
 
-    // Getter and Setter for Password
     public function getPassword(): string
     {
         return $this->password;
@@ -63,7 +59,6 @@ class Teacher implements CrudInterface
         $this->password = $password;
     }
 
-    // Implementing the save method
     public function save(PDO $pdo): bool
     {
         $stmt = $pdo->prepare("INSERT INTO teachers (username, email, password) VALUES (:username, :email, :password)");
@@ -73,7 +68,6 @@ class Teacher implements CrudInterface
         return $stmt->execute();
     }
 
-    // Implementing the select method
     public static function select(PDO $pdo, int $id): ?self
     {
         $stmt = $pdo->prepare("SELECT * FROM teachers WHERE id = :id");
@@ -87,7 +81,6 @@ class Teacher implements CrudInterface
         return null;
     }
 
-    // Implementing the delete method
     public function delete(PDO $pdo): bool
     {
         $stmt = $pdo->prepare("DELETE FROM teachers WHERE id = :id");
@@ -95,7 +88,6 @@ class Teacher implements CrudInterface
         return $stmt->execute();
     }
 
-    // Implementing the selectAll method
     public static function selectAll(PDO $pdo): array
     {
         $stmt = $pdo->query("SELECT * FROM teachers");
@@ -106,7 +98,6 @@ class Teacher implements CrudInterface
         return $results;
     }
 
-    // Login method for authentication
     public static function login(PDO $pdo, string $email, string $password): ?self
     {
         $stmt = $pdo->prepare("SELECT * FROM teachers WHERE email = :email");

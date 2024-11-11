@@ -9,7 +9,7 @@ class DeleteController
 {
     private $pdo;
 
-    public function __construct(PDO $pdo) // Only PDO is required
+    public function __construct(PDO $pdo) 
     {
         $this->pdo = $pdo;
     }
@@ -25,7 +25,7 @@ class DeleteController
             }
         }
 
-        header('Location: ?page=overview'); // Redirect back to the overview page
+        header('Location: ?page=overview');
         exit;
     }
 }

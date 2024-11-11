@@ -20,59 +20,45 @@ class Student implements CrudInterface
         $this->email = $email;
     }
 
-    // Getters and Setters
-    public function getId(): int
-    {
+    public function getId(): int { 
         return $this->id;
-    }
+     }
 
-    public function setId(int $id): void
-    {
-        $this->id = $id;
+    public function setId(int $id): void { 
+        $this->id = $id; 
     }
 
     public function getName(): string
-    {
-        return $this->name;
+     { return $this->name; 
     }
+    public function setName(string $name): void 
+    { $this->name = $name;
+     }
 
-    public function setName(string $name): void
-    {
-        $this->name = $name;
+    public function getScore(): int { return 
+        $this->score; 
     }
-
-    public function getScore(): int
-    {
-        return $this->score;
-    }
-
-    public function setScore(int $score): void
-    {
+    public function setScore(int $score): void { 
         $this->score = $score;
+     }
+
+    public function getEmail(): string { return
+         $this->email; 
+    }
+    public function setEmail(string $email): void { 
+        $this->email = $email; 
     }
 
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
 
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    // Implementing the save method from CrudInterface
     public function save(PDO $pdo): bool
     {
         if ($this->id === 0) {
-            // Insert new student
             $stmt = $pdo->prepare("INSERT INTO students (name, score, email) VALUES (:name, :score, :email)");
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':score', $this->score);
             $stmt->bindParam(':email', $this->email);
             return $stmt->execute();
         } else {
-            // Update existing student
             $stmt = $pdo->prepare("UPDATE students SET name = :name, score = :score, email = :email WHERE id = :id");
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':score', $this->score);
@@ -82,7 +68,6 @@ class Student implements CrudInterface
         }
     }
 
-    // Implementing the delete method from CrudInterface
     public function delete(PDO $pdo): bool
     {
         $stmt = $pdo->prepare("DELETE FROM students WHERE id = :id");
@@ -90,7 +75,6 @@ class Student implements CrudInterface
         return $stmt->execute();
     }
 
-    // Implementing the select method from CrudInterface
     public static function select(PDO $pdo, int $id): ?Student
     {
         $stmt = $pdo->prepare("SELECT * FROM students WHERE id = :id");
@@ -110,15 +94,27 @@ class Student implements CrudInterface
         return null;
     }
 
-    // Implementing the selectAll method from CrudInterface
-    public static function selectAll(PDO $pdo): array
+    public static function selectAll(PDO $pdo, ?int $minScore = null, ?string $nameFilter = null): array
     {
-        $stmt = $pdo->prepare("SELECT * FROM students");
-        $stmt->execute();
+        $query = "SELECT * FROM students WHERE 1";
+        $params = [];
+
+        if ($minScore !== null) {
+            $query .= " AND score >= :minScore";
+            $params['minScore'] = $minScore;
+        }
+
+        if ($nameFilter !== null) {
+            $query .= " AND name LIKE :name";
+            $params['name'] = $nameFilter . '%';
+        }
+
+        $query .= " ORDER BY name ASC";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute($params);
 
         $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Convert each row to a Student object
         $studentObjects = [];
         foreach ($students as $studentData) {
             $studentObjects[] = new self(

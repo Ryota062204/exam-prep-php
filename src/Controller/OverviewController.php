@@ -3,14 +3,14 @@
 namespace Src\Controller;
 
 use Src\Model\Student;
-use PDO;
+use Twig\Environment;
 
 class OverviewController
 {
-    private $twig;
-    private $pdo;
+    private Environment $twig;
+    private \PDO $pdo;
 
-    public function __construct($twig, PDO $pdo)
+    public function __construct(Environment $twig, \PDO $pdo)
     {
         $this->twig = $twig;
         $this->pdo = $pdo;
@@ -18,7 +18,11 @@ class OverviewController
 
     public function render()
     {
-        $students = Student::selectAll($this->pdo);
+        $minScore = isset($_GET['score']) && $_GET['score'] !== '' ? (int)$_GET['score'] : null;
+        $nameFilter = isset($_GET['name']) && $_GET['name'] !== '' ? $_GET['name'] : null;
+
+        $students = Student::selectAll($this->pdo, $minScore, $nameFilter);
+
         echo $this->twig->render('overview.html.twig', ['students' => $students]);
     }
 }

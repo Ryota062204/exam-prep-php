@@ -21,7 +21,6 @@ class EditController
         $id = $_GET['id'] ?? null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Handle form submission to update student data
             $name = $_POST['name'];
             $email = $_POST['email'];
             $score = $_POST['score'];
@@ -37,7 +36,6 @@ class EditController
                 exit;
             }
         } else {
-            // Display edit form
             $student = Student::select($this->pdo, (int)$id);
             if ($student) {
                 echo $this->twig->render('edit.html.twig', ['student' => $student]);

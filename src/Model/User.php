@@ -15,7 +15,6 @@ abstract class User
         $this->id = $id;
     }
 
-    // Getters and Setters for the properties
 
     public function getId(): ?int
     {
@@ -47,7 +46,6 @@ abstract class User
         $this->password = $password;
     }
 
-    // Login method for teacher (could be used for authentication)
     public static function login(string $email, string $password): ?User
     {
         global $pdo;
