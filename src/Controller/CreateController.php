@@ -2,8 +2,7 @@
 
 namespace Src\Controller;
 
-use Src\Model\Student;
-use Src\Model\Teacher;
+use Src\Model\Quotes;
 use Twig\Environment;
 use PDO;
 
@@ -21,15 +20,19 @@ class CreateController
     public function render()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? null;
-            $email = $_POST['email'] ?? null;
-            $score = $_POST['score'] ?? null;
+            $quote = $_POST['quote'] ?? null;
+            $author = $_POST['author'] ?? null;
+            $genre = $_POST['genre'] ?? null;
+            $description = $_POST['description'] ?? null;
+            $date = $_POST['date'] ?? null;
 
-            if ($name && $email && $score) {
-                $stmt = $this->pdo->prepare("INSERT INTO students (name, email, score) VALUES (:name, :email, :score)");
-                $stmt->bindParam(':name', $name);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':score', $score);
+            if ($quote && $author && $genre && $description && $date) {
+                $stmt = $this->pdo->prepare("INSERT INTO quotes (quote, author, genre, description, date) VALUES (:quote, :author, :genre, :description, :date)");
+                $stmt->bindParam(':quote', $quote);
+                $stmt->bindParam(':author', $author);
+                $stmt->bindParam(':genre', $genre);
+                $stmt->bindParam(':description', $description);
+                $stmt->bindParam(':date', $date);
                 $stmt->execute();
             }
         }

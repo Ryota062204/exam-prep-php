@@ -2,7 +2,7 @@
 
 namespace Src\Controller;
 
-use Src\Model\Student;
+use Src\Model\Quotes;
 use Twig\Environment;
 
 class OverviewController
@@ -18,11 +18,10 @@ class OverviewController
 
     public function render()
     {
-        $minScore = isset($_GET['score']) && $_GET['score'] !== '' ? (int)$_GET['score'] : null;
-        $nameFilter = isset($_GET['name']) && $_GET['name'] !== '' ? $_GET['name'] : null;
+        $authorFilter = isset($_GET['author']) && $_GET['author'] !== '' ? $_GET['author'] : null;
 
-        $students = Student::selectAll($this->pdo, $minScore, $nameFilter);
+        $quotes = Quotes::selectAll($this->pdo, $authorFilter);
 
-        echo $this->twig->render('overview.html.twig', ['students' => $students]);
+        echo $this->twig->render('overview.html.twig', ['quotes' => $quotes, 'authorFilter' => $authorFilter]);
     }
 }

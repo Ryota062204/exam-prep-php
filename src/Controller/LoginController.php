@@ -2,7 +2,7 @@
 
 namespace Src\Controller;
 
-use Src\Model\Teacher;
+use Src\Model\QuoteUsers;
 
 class LoginController
 {
@@ -23,7 +23,7 @@ class LoginController
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            $teacher = Teacher::login($this->pdo, $email, $password);
+            $teacher = QuoteUsers::login($this->pdo, $email, $password);
 
             if ($teacher) {
                 header("Location: ?page=overview");

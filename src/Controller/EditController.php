@@ -2,7 +2,7 @@
 
 namespace Src\Controller;
 
-use Src\Model\Student;
+use Src\Model\Quotes;
 use PDO;
 
 class EditController
@@ -21,24 +21,26 @@ class EditController
         $id = $_GET['id'] ?? null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $score = $_POST['score'];
+            $quote = $_POST['quote'];
+            $author = $_POST['author'];
+            $genre = $_POST['genre'];
+            $description = $_POST['description'];
 
-            $student = Student::select($this->pdo, (int)$id);
-            if ($student) {
-                $student->setName($name);
-                $student->setEmail($email);
-                $student->setScore($score);
-                $student->save($this->pdo);
+            $quoteObj = Quotes::select($this->pdo, (int)$id);
+            if ($quoteObj) {
+                $quoteObj->setQuote($quote);
+                $quoteObj->setAuthor($author);
+                $quoteObj->setGenre($genre);
+                $quoteObj->setQuoteDescription($description);
+                $quoteObj->save($this->pdo);
 
                 header('Location: ?page=overview');
                 exit;
             }
         } else {
-            $student = Student::select($this->pdo, (int)$id);
-            if ($student) {
-                echo $this->twig->render('edit.html.twig', ['student' => $student]);
+            $quoteObj = Quotes::select($this->pdo, (int)$id);
+            if ($quoteObj) {
+                echo $this->twig->render('edit.html.twig', ['quote' => $quoteObj]);
             } else {
                 header('Location: ?page=overview');
             }

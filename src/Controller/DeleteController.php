@@ -2,7 +2,7 @@
 
 namespace Src\Controller;
 
-use Src\Model\Student;
+use Src\Model\Quotes;
 use PDO;
 
 class DeleteController
@@ -19,7 +19,7 @@ class DeleteController
         $id = $_GET['id'] ?? null;
 
         if ($id) {
-            $student = Student::select($this->pdo, (int)$id);
+            $student = Quotes::select($this->pdo, (int)$id);
             if ($student) {
                 $student->delete($this->pdo);
             }

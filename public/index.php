@@ -13,7 +13,7 @@ use Src\Model\User;
 require_once '../vendor/autoload.php';
 
 // Database connection
-$pdo = new PDO('mysql:host=localhost;dbname=student_management', 'root', '');
+$pdo = new PDO('mysql:host=localhost;dbname=quotes_info', 'root', '');
 
 // Twig setup
 $loader = new \Twig\Loader\FilesystemLoader('../resources'); // Correct the path to point directly to 'resources' folder

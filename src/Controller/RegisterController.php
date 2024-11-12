@@ -2,7 +2,7 @@
 
 namespace Src\Controller;
 
-use Src\Model\Teacher;
+use Src\Model\QuoteUsers;
 use Src\Model\User;
 use Twig\Environment;
 use PDO;
@@ -30,7 +30,7 @@ class RegisterController
                 if ($password === $confirmPassword) {
                     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-                    $stmt = $this->pdo->prepare("INSERT INTO teachers (username, email, password) VALUES (:username, :email, :password)");
+                    $stmt = $this->pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
                     $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':email', $email);
                     $stmt->bindParam(':password', $hashedPassword);
