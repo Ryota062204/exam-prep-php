@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Quote</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Quote</h2>
+    <form action="?page=edit&id={{ quote.id }}" method="POST">
+        <div class="mb-3">
+            <label for="quote" class="form-label">Quote:</label>
+            <input type="text" name="quote" id="quote" value="{{ quote.quote }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="form-label">Author:</label>
+            <input type="text" name="author" id="author" value="{{ quote.author }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="genre" class="form-label">Genre:</label>
+            <input type="text" name="genre" id="genre" value="{{ quote.genre }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <textarea name="description" id="description" class="form-control" required>{{ quote.description }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="?page=overview" class="btn btn-secondary ms-2">Back to Overview</a>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
