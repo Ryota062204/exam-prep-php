@@ -1,0 +1,11 @@
+<h2>Delete Quote</h2>
+{% if error %}
+    <p style="color: red;">{{ error }}</p>
+{% endif %}
+<form method="get" action="?page=delete">
+    <label for="id">Quote ID to delete:</label>
+    <input type="number" id="id" name="id" required>
+
+    <button type="submit">Delete Quote</button>
+</form>
+<p><a href="?page=overview">Back to Overview</a></p>
